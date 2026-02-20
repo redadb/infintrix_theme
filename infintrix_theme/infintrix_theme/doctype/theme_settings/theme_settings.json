@@ -21,7 +21,7 @@
  "fields": [
   {
    "allow_in_quick_entry": 1,
-   "default": "Roboto",
+   "default": "Outfit",
    "fieldname": "font_family",
    "fieldtype": "Select",
    "label": "Font Family",
@@ -29,7 +29,7 @@
   },
   {
    "allow_in_quick_entry": 1,
-   "default": "#1B7F52",
+   "default": "#4F46E5",
    "fieldname": "color",
    "fieldtype": "Color",
    "label": "Color"
@@ -55,7 +55,7 @@
   },
   {
    "allow_in_quick_entry": 1,
-   "default": "0",
+   "default": "1",
    "fieldname": "disable_splash",
    "fieldtype": "Check",
    "label": "Disable Splash"
