@@ -14,6 +14,44 @@
   "dark_logo",
   "column_break_pfzv",
   "font_preview",
+  "buttons_tab",
+  "btn_radius",
+  "btn_shadow",
+  "btn_hover_lift",
+  "cards_tab",
+  "card_radius",
+  "glass_blur",
+  "card_shadow",
+  "tables_tab",
+  "table_row_height",
+  "table_header_bg",
+  "table_striped",
+  "sidebar_tab",
+  "sidebar_width",
+  "sidebar_item_radius",
+  "sidebar_active_style",
+  "animations_tab",
+  "transition_speed",
+  "easing_type",
+  "buttons_tab",
+  "btn_radius",
+  "btn_shadow",
+  "btn_hover_lift",
+  "cards_tab",
+  "card_radius",
+  "glass_blur",
+  "card_shadow",
+  "tables_tab",
+  "table_row_height",
+  "table_header_bg",
+  "table_striped",
+  "sidebar_tab",
+  "sidebar_width",
+  "sidebar_item_radius",
+  "sidebar_active_style",
+  "animations_tab",
+  "transition_speed",
+  "easing_type",
   "login_page_tab",
   "login_page_image",
   "login_background_image"
@@ -90,6 +128,118 @@
    "fieldname": "login_background_image",
    "fieldtype": "Attach Image",
    "label": "Login Background Image"
+  },
+  {
+   "fieldname": "buttons_tab",
+   "fieldtype": "Tab Break",
+   "label": "Buttons"
+  },
+  {
+   "default": "4",
+   "fieldname": "btn_radius",
+   "fieldtype": "Int",
+   "label": "Button Radius (px)"
+  },
+  {
+   "default": "1",
+   "fieldname": "btn_shadow",
+   "fieldtype": "Check",
+   "label": "Enable Button Shadow"
+  },
+  {
+   "default": "1",
+   "fieldname": "btn_hover_lift",
+   "fieldtype": "Check",
+   "label": "Enable Hover Lift Animation"
+  },
+  {
+   "fieldname": "cards_tab",
+   "fieldtype": "Tab Break",
+   "label": "Cards & Widgets"
+  },
+  {
+   "default": "12",
+   "fieldname": "card_radius",
+   "fieldtype": "Int",
+   "label": "Card Radius (px)"
+  },
+  {
+   "default": "12",
+   "fieldname": "glass_blur",
+   "fieldtype": "Int",
+   "label": "Glass Blur Intensity (px)"
+  },
+  {
+   "default": "1",
+   "fieldname": "card_shadow",
+   "fieldtype": "Check",
+   "label": "Enable Card Shadow"
+  },
+  {
+   "fieldname": "tables_tab",
+   "fieldtype": "Tab Break",
+   "label": "Data Tables"
+  },
+  {
+   "default": "Standard",
+   "fieldname": "table_row_height",
+   "fieldtype": "Select",
+   "label": "Row Height",
+   "options": "Compact\nStandard\nSpacious"
+  },
+  {
+   "default": "1",
+   "fieldname": "table_header_bg",
+   "fieldtype": "Check",
+   "label": "Primary Header Background"
+  },
+  {
+   "default": "0",
+   "fieldname": "table_striped",
+   "fieldtype": "Check",
+   "label": "Striped Rows"
+  },
+  {
+   "fieldname": "sidebar_tab",
+   "fieldtype": "Tab Break",
+   "label": "Sidebar"
+  },
+  {
+   "default": "240",
+   "fieldname": "sidebar_width",
+   "fieldtype": "Int",
+   "label": "Sidebar Width (px)"
+  },
+  {
+   "default": "4",
+   "fieldname": "sidebar_item_radius",
+   "fieldtype": "Int",
+   "label": "Item Radius (px)"
+  },
+  {
+   "default": "Bar",
+   "fieldname": "sidebar_active_style",
+   "fieldtype": "Select",
+   "label": "Active Indicator Style",
+   "options": "Bar\nGlow\nFull"
+  },
+  {
+   "fieldname": "animations_tab",
+   "fieldtype": "Tab Break",
+   "label": "Animations"
+  },
+  {
+   "default": "200",
+   "fieldname": "transition_speed",
+   "fieldtype": "Int",
+   "label": "Transition Speed (ms)"
+  },
+  {
+   "default": "cubic-bezier(0.4, 0, 0.2, 1)",
+   "fieldname": "easing_type",
+   "fieldtype": "Select",
+   "label": "Easing Curve",
+   "options": "linear\nease\nease-in\nease-out\nease-in-out\ncubic-bezier(0.4, 0, 0.2, 1)"
   }
  ],
  "grid_page_length": 50,

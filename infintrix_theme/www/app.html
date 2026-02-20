@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme-mode="{{ desk_theme.lower() }}" data-theme="{{ desk_theme.lower() }}" dir={{ layout_direction }} lang="{{ lang }}">
+<html data-theme-mode="{{ desk_theme.lower() }}" data-theme="{{ desk_theme.lower() }}" data-sidebar-active-style="{{ theme_settings.sidebar_active_style or 'Bar' }}" data-table-striped="{{ theme_settings.table_striped or '0' }}" dir={{ layout_direction }} lang="{{ lang }}">
 	<head>
 		<meta charset="UTF-8">
 		<!-- Chrome, Firefox OS and Opera -->
@@ -61,33 +61,56 @@
         --brand-color-800: color-mix(in srgb, var(--brand-color) 55%, black);
         --brand-color-900: color-mix(in srgb, var(--brand-color) 40%, black);
 
-        /* --- Apply Dynamic Variables --- */
-		/* --- 1. Fluent Design Color & Style Palette (Dynamic) --- */
-		--fluent-primary: var(--brand-color);
-		--fluent-primary-dark: var(--brand-color-900);
-		
+        /* --- Design System Tokens --- */
+        --inf-btn-radius: {{ (theme_settings.btn_radius or 6) }}px;
+        --inf-btn-shadow: {{ '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)' if theme_settings.btn_shadow|int else 'none' }};
+        --inf-btn-hover-lift: {{ '-2px' if theme_settings.btn_hover_lift|int else '0' }};
+        
+        --inf-card-radius: {{ (theme_settings.card_radius or 12) }}px;
+        --inf-glass-blur: {{ (theme_settings.glass_blur or 12) }}px;
+        --inf-card-shadow: {{ '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)' if theme_settings.card_shadow|int else 'none' }};
 
-		/* --- 2. Override Core Frappe Variables (Dynamic) --- */
-		--font-stack: '{{ theme_settings.font_family or "Roboto" }}', "InterVariable", "Inter", sans-serif;
-		--bg-color: var(--fluent-background);
-		--fg-color: var(--fluent-surface);
-		--navbar-bg: var(--fluent-surface-transparent);
-		--modal-bg: var(--fluent-surface);
-		--popover-bg: var(--fluent-surface);
-		--card-bg: var(--fluent-surface);
-		--primary: var(--fluent-primary);
-		--btn-primary: var(--fluent-primary);
-		--text-color: var(--fluent-text-primary);
-		--text-muted: var(--fluent-text-secondary);
-		--heading-color: var(--fluent-text-primary);
-		--border-color: var(--fluent-divider);
-		--table-border-color: var(--fluent-divider);
-		--control-bg: var(--fluent-surface);
-		--highlight-color: color-mix(in srgb, var(--brand-color) 10%, #0078D4 10%, white 80%);
-		--card-shadow: var(--fluent-shadow-md);
-		--modal-shadow: var(--fluent-shadow-lg);
-		--btn-shadow: none;
+        --inf-table-row-height: {{ '32px' if theme_settings.table_row_height == 'Compact' else '52px' if theme_settings.table_row_height == 'Spacious' else '42px' }};
+        --inf-table-header-bg: {{ 'var(--brand-color)' if theme_settings.table_header_bg|int else 'transparent' }};
+        --inf-table-header-color: {{ '#ffffff' if theme_settings.table_header_bg|int else 'inherit' }};
 
+        --inf-sidebar-width: {{ (theme_settings.sidebar_width or 260) }}px;
+        --inf-sidebar-item-radius: {{ (theme_settings.sidebar_item_radius or 8) }}px;
+        --inf-sidebar-active-style: "{{ theme_settings.sidebar_active_style or 'Bar' }}";
+
+        --inf-transition-speed: {{ (theme_settings.transition_speed or 250) }}ms;
+        --inf-easing: {{ theme_settings.easing_type or 'cubic-bezier(0.4, 0, 0.2, 1)' }};
+
+        /* --- apply to core --- */
+        --border-radius-sm: calc(var(--inf-btn-radius) * 0.5);
+        --border-radius-md: var(--inf-btn-radius);
+        --border-radius-lg: var(--inf-card-radius);
+
+        /* --- 1. Fluent Design Color & Style Palette (Dynamic) --- */
+        --fluent-primary: var(--brand-color);
+        --fluent-primary-dark: var(--brand-color-900);
+
+        /* --- 2. Override Core Frappe Variables (Dynamic) --- */
+        --font-stack: '{{ theme_settings.font_family or "Roboto" }}', "InterVariable", "Inter", sans-serif;
+        --bg-color: var(--fluent-background);
+        --fg-color: var(--fluent-surface);
+        --navbar-bg: var(--fluent-surface-transparent);
+        --modal-bg: var(--fluent-surface);
+        --popover-bg: var(--fluent-surface);
+        --card-bg: var(--fluent-surface);
+        --primary: var(--fluent-primary);
+        --btn-primary: var(--fluent-primary);
+        --text-color: var(--fluent-text-primary);
+        --text-muted: var(--fluent-text-secondary);
+        --heading-color: var(--fluent-text-primary);
+        --border-color: var(--fluent-divider);
+        --table-border-color: var(--fluent-divider);
+        --control-bg: var(--fluent-surface);
+        --highlight-color: color-mix(in srgb, var(--brand-color) 10%, #0078D4 10%, white 80%);
+        --card-shadow: var(--inf-card-shadow);
+        --modal-shadow: var(--fluent-shadow-lg);
+        --btn-shadow: var(--inf-btn-shadow);
+    }
 
     }
 	.layout-side-section {
