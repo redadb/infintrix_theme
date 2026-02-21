@@ -110,23 +110,21 @@ $(document).ready(() => {
 	})();
 
 	function relocatePageHeadIntoMainWrapper() {
-		const pageContents = document.querySelectorAll(".page-content");
-		pageContents.forEach((pageContent) => {
-			const pageHead = pageContent.querySelector(":scope > .page-head.flex");
+		// The page-head.flex sits under .page-container as a direct child
+		// On Workspace pages the wrapper is deeply nested: 
+		// .page-container > .page-body > .page-wrapper > .page-content > .layout-main > .col.layout-main-section-wrapper
+		const containers = document.querySelectorAll(".page-container, .content.page-container");
+		containers.forEach((container) => {
+			const pageHead = container.querySelector(":scope > .page-head.flex");
 			if (!pageHead) return;
 
+			// Search for the wrapper anywhere inside the container (not just direct children)
 			const mainWrapper =
-				pageContent.querySelector(".layout-main .layout-main-section-wrapper") ||
-				pageContent.querySelector(".layout-main-section-wrapper");
+				container.querySelector(".col.layout-main-section-wrapper") ||
+				container.querySelector(".layout-main-section-wrapper");
 
 			if (mainWrapper && pageHead.parentElement !== mainWrapper) {
 				mainWrapper.insertBefore(pageHead, mainWrapper.firstChild);
-				return;
-			}
-
-			const pageBody = pageContent.querySelector(":scope > .container.page-body");
-			if (pageBody && pageHead.parentElement !== pageBody) {
-				pageBody.insertBefore(pageHead, pageBody.firstChild);
 			}
 		});
 	}
@@ -145,10 +143,19 @@ $(document).ready(() => {
 			observer.observe(bodyRoot, { childList: true, subtree: true });
 		}
 
-		$(document).on("page-change", () => {
-			setTimeout(relocatePageHeadIntoMainWrapper, 0);
-			setTimeout(relocatePageHeadIntoMainWrapper, 120);
-		});
+		// Retry with increasing delays for async page renders
+		function scheduleRetries() {
+			[0, 100, 300, 600, 1200].forEach(delay => {
+				setTimeout(relocatePageHeadIntoMainWrapper, delay);
+			});
+		}
+
+		$(document).on("page-change", scheduleRetries);
+
+		// Also hook into frappe router if available
+		if (typeof frappe !== 'undefined' && frappe.router && frappe.router.on) {
+			frappe.router.on("change", scheduleRetries);
+		}
 	})();
 
 	function addFullscreenToggleButton() {
@@ -341,8 +348,8 @@ $(document).ready(() => {
 												frappe.msgprint(
 													__(
 														"Language switched to " +
-															values.language.split(" - ")[0] +
-															". Reloading..."
+														values.language.split(" - ")[0] +
+														". Reloading..."
 													)
 												);
 												location.reload();
@@ -461,85 +468,186 @@ $(document).ready(() => {
 	mo.observe(document.body, { childList: true, subtree: true });
 })();
 (function () {
-  const titleStyle = `
+	const titleStyle = `
     color: #00E5FF;
     font-size: 28px;
     font-weight: 700;
     text-shadow: 1px 1px 2px #000;
   `;
 
-  const textStyle = `
+	const textStyle = `
     color: #B2EBF2;
     font-size: 13px;
   `;
 
-  const warnStyle = `
+	const warnStyle = `
     color: #FF5252;
     font-size: 14px;
     font-weight: bold;
   `;
 
-  const linkStyle = `
+	const linkStyle = `
     color: #80DEEA;
     font-size: 12px;
     text-decoration: underline;
   `;
 
-  console.clear();
+	console.clear();
 
-  console.log("%cInfintrix Technologies LLC", titleStyle);
-  console.log(
-    "%cERPNext Implementation • AI Automation • Custom Engineering Systems",
-    textStyle
-  );
-  console.log(
-    "%c⚠️  Unauthorized modification may break core business logic",
-    warnStyle
-  );
-  console.log(
-    "%chttps://infintrixtech.com",
-    linkStyle
-  );
+	console.log("%cInfintrix Technologies LLC", titleStyle);
+	console.log(
+		"%cERPNext Implementation • AI Automation • Custom Engineering Systems",
+		textStyle
+	);
+	console.log(
+		"%c⚠️  Unauthorized modification may break core business logic",
+		warnStyle
+	);
+	console.log(
+		"%chttps://infintrixtech.com",
+		linkStyle
+	);
 })();
 
+/* ─────────────────────────────────────────────────────────
+ * Infintrix Branding Replacement Module
+ * Replaces upstream Frappe/ERPNext/HRMS branding text
+ * with Infintrix custom branding throughout the UI.
+ * ───────────────────────────────────────────────────────── */
+(function () {
+	"use strict";
 
-// (function () {
-//   function addButton(input) {
-//     if (input.dataset._btnAdded === "1") return;
+	// ── Brand mapping (order matters: longer/more-specific first) ──
+	const BRAND_MAP = [
+		["Frappe Framework", "Orderlift Platform"],
+		["Frappe HR", "Orderlift HR"],
+		["Powered by Frappe", "Powered by Orderlift"],
+		["Built on Frappe", "Built on Orderlift"],
+		["ERPNext", "Orderlift ERP"],
+		["HRMS", "Orderlift HR"],
+	];
 
-//     const btn = document.createElement("button");
-//     btn.type = "button";
-//     btn.textContent = "+";
-//     btn.className = "link-add-btn btn-primary";
-//     btn.style.padding = "4px 10px";
-//     btn.style.border = "1px solid #ccc";
-//     btn.style.borderRadius = "4px";
-//     btn.style.background = "#f8f9fa";
-//     btn.style.cursor = "pointer";
+	// Build a single regex from all patterns for fast matching
+	const BRAND_RE = new RegExp(
+		BRAND_MAP.map(([from]) => from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"),
+		"g"
+	);
 
-//     btn.addEventListener("click", () => {
-//       const target = input.dataset.target || input.dataset.doctype || "record";
-//       alert("Create new " + target);
-//       // if frappe available:
-//       // frappe.new_doc(target);
-//     });
+	const BRAND_LOOKUP = Object.fromEntries(BRAND_MAP);
 
-//     input.insertAdjacentElement("afterend", btn);
-//     input.dataset._btnAdded = "1";
-//   }
+	// ── Walk text nodes and replace branding ──
+	function replaceBrandingInNode(root) {
+		if (!root) return;
 
-//   function processAll() {
-//     document.querySelectorAll('input[data-fieldtype="Link"]').forEach(addButton);
-//   }
+		const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+			acceptNode(node) {
+				// Skip script/style/textarea elements
+				const tag = node.parentElement && node.parentElement.tagName;
+				if (tag === "SCRIPT" || tag === "STYLE" || tag === "TEXTAREA" || tag === "CODE" || tag === "PRE") {
+					return NodeFilter.FILTER_REJECT;
+				}
+				BRAND_RE.lastIndex = 0;
+				return BRAND_RE.test(node.textContent)
+					? NodeFilter.FILTER_ACCEPT
+					: NodeFilter.FILTER_REJECT;
+			},
+		});
 
-//   // Initial run once DOM is ready
-//   if (document.readyState === "loading") {
-//     document.addEventListener("DOMContentLoaded", processAll);
-//   } else {
-//     processAll();
-//   }
+		const nodes = [];
+		while (walker.nextNode()) nodes.push(walker.currentNode);
 
-//   // Watch for dynamically inserted fields
-//   const mo = new MutationObserver(() => processAll());
-//   mo.observe(document.body, { childList: true, subtree: true });
-// })();
+		nodes.forEach((textNode) => {
+			BRAND_RE.lastIndex = 0;
+			textNode.textContent = textNode.textContent.replace(BRAND_RE, (match) => BRAND_LOOKUP[match] || match);
+		});
+	}
+
+	// ── Replace branding in element attributes (title, placeholder, aria-label) ──
+	function replaceBrandingInAttributes(root) {
+		if (!root || !root.querySelectorAll) return;
+		const attrs = ["title", "placeholder", "aria-label", "data-original-title"];
+		const elements = root.querySelectorAll("[title], [placeholder], [aria-label], [data-original-title]");
+		elements.forEach((el) => {
+			attrs.forEach((attr) => {
+				const val = el.getAttribute(attr);
+				if (val) {
+					BRAND_RE.lastIndex = 0;
+					if (BRAND_RE.test(val)) {
+						BRAND_RE.lastIndex = 0;
+						el.setAttribute(attr, val.replace(BRAND_RE, (m) => BRAND_LOOKUP[m] || m));
+					}
+				}
+			});
+		});
+	}
+
+	// ── Replace document title ──
+	function replaceBrandingInTitle() {
+		if (document.title) {
+			BRAND_RE.lastIndex = 0;
+			if (BRAND_RE.test(document.title)) {
+				BRAND_RE.lastIndex = 0;
+				document.title = document.title.replace(BRAND_RE, (m) => BRAND_LOOKUP[m] || m);
+			}
+		}
+	}
+
+	// ── Main replacement pass ──
+	function applyBrandingReplacement() {
+		replaceBrandingInNode(document.body);
+		replaceBrandingInAttributes(document.body);
+		replaceBrandingInTitle();
+	}
+
+	// ── Debounced MutationObserver ──
+	let _brandingTimer = null;
+	function scheduleBrandingReplacement() {
+		if (_brandingTimer) clearTimeout(_brandingTimer);
+		_brandingTimer = setTimeout(applyBrandingReplacement, 200);
+	}
+
+	// Initial run
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", () => {
+			applyBrandingReplacement();
+			const mo = new MutationObserver(scheduleBrandingReplacement);
+			mo.observe(document.body, { childList: true, subtree: true, characterData: true });
+		});
+	} else {
+		applyBrandingReplacement();
+		const mo = new MutationObserver(scheduleBrandingReplacement);
+		mo.observe(document.body, { childList: true, subtree: true, characterData: true });
+	}
+
+	// Also run on route changes
+	if (typeof frappe !== "undefined" && frappe.router && frappe.router.on) {
+		frappe.router.on("change", () => {
+			setTimeout(applyBrandingReplacement, 300);
+			setTimeout(applyBrandingReplacement, 800);
+		});
+	}
+	$(document).on("page-change", () => {
+		setTimeout(applyBrandingReplacement, 300);
+		setTimeout(applyBrandingReplacement, 800);
+	});
+
+	// ── Override the About dialog ──
+	if (typeof frappe !== "undefined") {
+		const _origAbout = frappe.ui && frappe.ui.misc && frappe.ui.misc.about;
+		$(document).ready(() => {
+			if (frappe.ui && frappe.ui.misc) {
+				frappe.ui.misc.about = function () {
+					if (_origAbout) _origAbout.call(this);
+					// After the dialog renders, replace text inside it
+					setTimeout(() => {
+						const aboutModal = document.querySelector(".modal.show .modal-body, .modal.show .modal-content");
+						if (aboutModal) {
+							replaceBrandingInNode(aboutModal);
+							replaceBrandingInAttributes(aboutModal);
+						}
+					}, 100);
+				};
+			}
+		});
+	}
+})();

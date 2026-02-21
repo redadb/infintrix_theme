@@ -23,8 +23,18 @@
   "glass_blur",
   "card_shadow",
   "tables_tab",
+  "table_density_mode",
   "table_row_height",
+  "table_header_height",
+  "table_header_radius",
   "table_header_bg",
+  "table_border_mode",
+  "table_zebra_mode",
+  "table_hover_style",
+  "table_row_radius",
+  "table_row_gap",
+  "table_sort_icon_style",
+  "table_toolbar_style",
   "table_striped",
   "sidebar_tab",
   "sidebar_width",
@@ -33,25 +43,45 @@
   "animations_tab",
   "transition_speed",
   "easing_type",
-  "buttons_tab",
-  "btn_radius",
-  "btn_shadow",
-  "btn_hover_lift",
-  "cards_tab",
-  "card_radius",
-  "glass_blur",
-  "card_shadow",
-  "tables_tab",
-  "table_row_height",
-  "table_header_bg",
-  "table_striped",
-  "sidebar_tab",
-  "sidebar_width",
-  "sidebar_item_radius",
-  "sidebar_active_style",
-  "animations_tab",
-  "transition_speed",
-  "easing_type",
+  "appearance_tab",
+  "theme_preset",
+  "surface_bg_color",
+  "surface_card_color",
+  "border_color",
+  "text_primary_color",
+  "text_muted_color",
+  "link_color",
+  "navbar_height",
+  "input_focus_ring_color",
+  "lists_tab",
+  "list_row_radius",
+  "list_row_padding",
+  "list_hover_bg",
+  "reports_tab",
+  "table_header_text_color",
+  "table_hover_bg",
+  "table_border_color",
+  "table_cell_padding",
+  "sticky_table_header",
+  "report_toolbar_bg",
+  "workspace_tab",
+  "shortcut_card_radius",
+  "shortcut_card_padding",
+  "shortcut_icon_bg",
+  "shortcut_icon_color",
+  "shortcut_hover_lift",
+  "feedback_tab",
+  "badge_radius",
+  "badge_style",
+  "tweaks_tab",
+  "ui_density_mode",
+  "content_max_width",
+  "navbar_blur_strength",
+  "button_text_transform",
+  "card_border_style",
+  "custom_code_tab",
+  "custom_css_code",
+  "custom_js_code",
   "login_page_tab",
   "login_page_image",
   "login_background_image"
@@ -182,16 +212,82 @@
   },
   {
    "default": "Standard",
+   "fieldname": "table_density_mode",
+   "fieldtype": "Select",
+   "label": "Density Mode",
+   "options": "Compact\nStandard\nSpacious"
+  },
+  {
+   "default": "Standard",
    "fieldname": "table_row_height",
    "fieldtype": "Select",
    "label": "Row Height",
    "options": "Compact\nStandard\nSpacious"
   },
   {
+   "default": "44",
+   "fieldname": "table_header_height",
+   "fieldtype": "Int",
+   "label": "Header Height (px)"
+  },
+  {
+   "default": "10",
+   "fieldname": "table_header_radius",
+   "fieldtype": "Int",
+   "label": "Header Radius (px)"
+  },
+  {
    "default": "1",
    "fieldname": "table_header_bg",
    "fieldtype": "Check",
    "label": "Primary Header Background"
+  },
+  {
+   "default": "Subtle",
+   "fieldname": "table_border_mode",
+   "fieldtype": "Select",
+   "label": "Border Mode",
+   "options": "None\nSubtle\nStrong"
+  },
+  {
+   "default": "Soft",
+   "fieldname": "table_zebra_mode",
+   "fieldtype": "Select",
+   "label": "Zebra Rows",
+   "options": "Off\nSoft\nStrong"
+  },
+  {
+   "default": "Lift",
+   "fieldname": "table_hover_style",
+   "fieldtype": "Select",
+   "label": "Row Hover Style",
+   "options": "None\nSoft\nLift\nGlow"
+  },
+  {
+   "default": "10",
+   "fieldname": "table_row_radius",
+   "fieldtype": "Int",
+   "label": "Row Radius (px)"
+  },
+  {
+   "default": "6",
+   "fieldname": "table_row_gap",
+   "fieldtype": "Int",
+   "label": "Row Gap (px)"
+  },
+  {
+   "default": "Bold",
+   "fieldname": "table_sort_icon_style",
+   "fieldtype": "Select",
+   "label": "Sort Icon Style",
+   "options": "Default\nBold\nMinimal"
+  },
+  {
+   "default": "Glass",
+   "fieldname": "table_toolbar_style",
+   "fieldtype": "Select",
+   "label": "Report Toolbar Style",
+   "options": "Flat\nCard\nGlass"
   },
   {
    "default": "0",
@@ -240,6 +336,238 @@
    "fieldtype": "Select",
    "label": "Easing Curve",
    "options": "linear\nease\nease-in\nease-out\nease-in-out\ncubic-bezier(0.4, 0, 0.2, 1)"
+  },
+  {
+   "fieldname": "appearance_tab",
+   "fieldtype": "Tab Break",
+   "label": "Appearance"
+  },
+  {
+   "default": "Modern Pro",
+   "fieldname": "theme_preset",
+   "fieldtype": "Select",
+   "label": "Theme Preset",
+   "options": "Modern Pro\nMinimal\nGlass"
+  },
+  {
+   "default": "#F7F9FC",
+   "fieldname": "surface_bg_color",
+   "fieldtype": "Color",
+   "label": "Page Background"
+  },
+  {
+   "default": "#FFFFFF",
+   "fieldname": "surface_card_color",
+   "fieldtype": "Color",
+   "label": "Card Background"
+  },
+  {
+   "default": "#D7DEEB",
+   "fieldname": "border_color",
+   "fieldtype": "Color",
+   "label": "Border Color"
+  },
+  {
+   "default": "#0F172A",
+   "fieldname": "text_primary_color",
+   "fieldtype": "Color",
+   "label": "Primary Text Color"
+  },
+  {
+   "default": "#64748B",
+   "fieldname": "text_muted_color",
+   "fieldtype": "Color",
+   "label": "Muted Text Color"
+  },
+  {
+   "default": "#1D4ED8",
+   "fieldname": "link_color",
+   "fieldtype": "Color",
+   "label": "Link Color"
+  },
+  {
+   "default": "54",
+   "fieldname": "navbar_height",
+   "fieldtype": "Int",
+   "label": "Navbar Height (px)"
+  },
+  {
+   "default": "rgba(37, 99, 235, 0.25)",
+   "fieldname": "input_focus_ring_color",
+   "fieldtype": "Data",
+   "label": "Input Focus Ring Color"
+  },
+  {
+   "fieldname": "lists_tab",
+   "fieldtype": "Tab Break",
+   "label": "List View"
+  },
+  {
+   "default": "12",
+   "fieldname": "list_row_radius",
+   "fieldtype": "Int",
+   "label": "List Row Radius (px)"
+  },
+  {
+   "default": "10",
+   "fieldname": "list_row_padding",
+   "fieldtype": "Int",
+   "label": "List Row Padding (px)"
+  },
+  {
+   "default": "rgba(37, 99, 235, 0.08)",
+   "fieldname": "list_hover_bg",
+   "fieldtype": "Data",
+   "label": "List Row Hover Background"
+  },
+  {
+   "fieldname": "reports_tab",
+   "fieldtype": "Tab Break",
+   "label": "Reports & Tables"
+  },
+  {
+   "default": "#FFFFFF",
+   "fieldname": "table_header_text_color",
+   "fieldtype": "Color",
+   "label": "Table Header Text Color"
+  },
+  {
+   "default": "rgba(37, 99, 235, 0.08)",
+   "fieldname": "table_hover_bg",
+   "fieldtype": "Data",
+   "label": "Table Row Hover Background"
+  },
+  {
+   "default": "#D7DEEB",
+   "fieldname": "table_border_color",
+   "fieldtype": "Color",
+   "label": "Table Border Color"
+  },
+  {
+   "default": "12",
+   "fieldname": "table_cell_padding",
+   "fieldtype": "Int",
+   "label": "Table Cell Padding (px)"
+  },
+  {
+   "default": "1",
+   "fieldname": "sticky_table_header",
+   "fieldtype": "Check",
+   "label": "Sticky Table Headers"
+  },
+  {
+   "default": "rgba(255, 255, 255, 0.75)",
+   "fieldname": "report_toolbar_bg",
+   "fieldtype": "Data",
+   "label": "Report Toolbar Background"
+  },
+  {
+   "fieldname": "workspace_tab",
+   "fieldtype": "Tab Break",
+   "label": "Workspace"
+  },
+  {
+   "default": "16",
+   "fieldname": "shortcut_card_radius",
+   "fieldtype": "Int",
+   "label": "Shortcut Card Radius (px)"
+  },
+  {
+   "default": "16",
+   "fieldname": "shortcut_card_padding",
+   "fieldtype": "Int",
+   "label": "Shortcut Card Padding (px)"
+  },
+  {
+   "default": "rgba(37, 99, 235, 0.12)",
+   "fieldname": "shortcut_icon_bg",
+   "fieldtype": "Data",
+   "label": "Shortcut Icon Background"
+  },
+  {
+   "default": "#1D4ED8",
+   "fieldname": "shortcut_icon_color",
+   "fieldtype": "Color",
+   "label": "Shortcut Icon Color"
+  },
+  {
+   "default": "4",
+   "fieldname": "shortcut_hover_lift",
+   "fieldtype": "Int",
+   "label": "Shortcut Hover Lift (px)"
+  },
+  {
+   "fieldname": "feedback_tab",
+   "fieldtype": "Tab Break",
+   "label": "Feedback"
+  },
+  {
+   "default": "999",
+   "fieldname": "badge_radius",
+   "fieldtype": "Int",
+   "label": "Badge Radius (px)"
+  },
+  {
+   "default": "Soft",
+   "fieldname": "badge_style",
+   "fieldtype": "Select",
+   "label": "Badge Style",
+   "options": "Soft\nSolid\nOutline"
+  },
+  {
+   "fieldname": "tweaks_tab",
+   "fieldtype": "Tab Break",
+   "label": "Tweaks"
+  },
+  {
+   "default": "Standard",
+   "fieldname": "ui_density_mode",
+   "fieldtype": "Select",
+   "label": "UI Density",
+   "options": "Compact\nStandard\nSpacious"
+  },
+  {
+   "default": "1680",
+   "fieldname": "content_max_width",
+   "fieldtype": "Int",
+   "label": "Content Max Width (px)"
+  },
+  {
+   "default": "20",
+   "fieldname": "navbar_blur_strength",
+   "fieldtype": "Int",
+   "label": "Navbar Blur Strength (px)"
+  },
+  {
+   "default": "None",
+   "fieldname": "button_text_transform",
+   "fieldtype": "Select",
+   "label": "Button Text Transform",
+   "options": "None\nUppercase"
+  },
+  {
+   "default": "Subtle",
+   "fieldname": "card_border_style",
+   "fieldtype": "Select",
+   "label": "Card Border Style",
+   "options": "None\nSubtle\nStrong"
+  },
+  {
+   "fieldname": "custom_code_tab",
+   "fieldtype": "Tab Break",
+   "label": "Custom Code"
+  },
+  {
+   "fieldname": "custom_css_code",
+   "fieldtype": "Code",
+   "label": "Custom CSS",
+   "options": "CSS"
+  },
+  {
+   "fieldname": "custom_js_code",
+   "fieldtype": "Code",
+   "label": "Custom JS",
+   "options": "Javascript"
   }
  ],
  "grid_page_length": 50,

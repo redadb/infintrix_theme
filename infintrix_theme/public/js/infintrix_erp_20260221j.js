@@ -110,23 +110,21 @@ $(document).ready(() => {
 	})();
 
 	function relocatePageHeadIntoMainWrapper() {
-		const pageContents = document.querySelectorAll(".page-content");
-		pageContents.forEach((pageContent) => {
-			const pageHead = pageContent.querySelector(":scope > .page-head.flex");
+		// The page-head.flex sits under .page-container as a direct child
+		// On Workspace pages the wrapper is deeply nested: 
+		// .page-container > .page-body > .page-wrapper > .page-content > .layout-main > .col.layout-main-section-wrapper
+		const containers = document.querySelectorAll(".page-container, .content.page-container");
+		containers.forEach((container) => {
+			const pageHead = container.querySelector(":scope > .page-head.flex");
 			if (!pageHead) return;
 
+			// Search for the wrapper anywhere inside the container (not just direct children)
 			const mainWrapper =
-				pageContent.querySelector(".layout-main .layout-main-section-wrapper") ||
-				pageContent.querySelector(".layout-main-section-wrapper");
+				container.querySelector(".col.layout-main-section-wrapper") ||
+				container.querySelector(".layout-main-section-wrapper");
 
 			if (mainWrapper && pageHead.parentElement !== mainWrapper) {
 				mainWrapper.insertBefore(pageHead, mainWrapper.firstChild);
-				return;
-			}
-
-			const pageBody = pageContent.querySelector(":scope > .container.page-body");
-			if (pageBody && pageHead.parentElement !== pageBody) {
-				pageBody.insertBefore(pageHead, pageBody.firstChild);
 			}
 		});
 	}
@@ -145,10 +143,19 @@ $(document).ready(() => {
 			observer.observe(bodyRoot, { childList: true, subtree: true });
 		}
 
-		$(document).on("page-change", () => {
-			setTimeout(relocatePageHeadIntoMainWrapper, 0);
-			setTimeout(relocatePageHeadIntoMainWrapper, 120);
-		});
+		// Retry with increasing delays for async page renders
+		function scheduleRetries() {
+			[0, 100, 300, 600, 1200].forEach(delay => {
+				setTimeout(relocatePageHeadIntoMainWrapper, delay);
+			});
+		}
+
+		$(document).on("page-change", scheduleRetries);
+
+		// Also hook into frappe router if available
+		if (typeof frappe !== 'undefined' && frappe.router && frappe.router.on) {
+			frappe.router.on("change", scheduleRetries);
+		}
 	})();
 
 	function addFullscreenToggleButton() {
@@ -341,8 +348,8 @@ $(document).ready(() => {
 												frappe.msgprint(
 													__(
 														"Language switched to " +
-															values.language.split(" - ")[0] +
-															". Reloading..."
+														values.language.split(" - ")[0] +
+														". Reloading..."
 													)
 												);
 												location.reload();
@@ -461,45 +468,45 @@ $(document).ready(() => {
 	mo.observe(document.body, { childList: true, subtree: true });
 })();
 (function () {
-  const titleStyle = `
+	const titleStyle = `
     color: #00E5FF;
     font-size: 28px;
     font-weight: 700;
     text-shadow: 1px 1px 2px #000;
   `;
 
-  const textStyle = `
+	const textStyle = `
     color: #B2EBF2;
     font-size: 13px;
   `;
 
-  const warnStyle = `
+	const warnStyle = `
     color: #FF5252;
     font-size: 14px;
     font-weight: bold;
   `;
 
-  const linkStyle = `
+	const linkStyle = `
     color: #80DEEA;
     font-size: 12px;
     text-decoration: underline;
   `;
 
-  console.clear();
+	console.clear();
 
-  console.log("%cInfintrix Technologies LLC", titleStyle);
-  console.log(
-    "%cERPNext Implementation • AI Automation • Custom Engineering Systems",
-    textStyle
-  );
-  console.log(
-    "%c⚠️  Unauthorized modification may break core business logic",
-    warnStyle
-  );
-  console.log(
-    "%chttps://infintrixtech.com",
-    linkStyle
-  );
+	console.log("%cInfintrix Technologies LLC", titleStyle);
+	console.log(
+		"%cERPNext Implementation • AI Automation • Custom Engineering Systems",
+		textStyle
+	);
+	console.log(
+		"%c⚠️  Unauthorized modification may break core business logic",
+		warnStyle
+	);
+	console.log(
+		"%chttps://infintrixtech.com",
+		linkStyle
+	);
 })();
 
 

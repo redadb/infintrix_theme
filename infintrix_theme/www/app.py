@@ -46,6 +46,78 @@ def get_context(context):
 	for theme_setting in theme_settings:
 		theme_settings_list[theme_setting['field']] = theme_setting['value']
 
+	theme_defaults = {
+		"font_family": "Inter",
+		"font_size": "14",
+		"color": "#2563EB",
+		"btn_radius": "10",
+		"btn_shadow": "1",
+		"btn_hover_lift": "1",
+		"card_radius": "16",
+		"card_shadow": "1",
+		"glass_blur": "10",
+		"table_density_mode": "Standard",
+		"table_row_height": "Standard",
+		"table_header_height": "44",
+		"table_header_radius": "10",
+		"table_header_bg": "1",
+		"table_border_mode": "Subtle",
+		"table_zebra_mode": "Soft",
+		"table_hover_style": "Lift",
+		"table_row_radius": "10",
+		"table_row_gap": "6",
+		"table_sort_icon_style": "Bold",
+		"table_toolbar_style": "Glass",
+		"table_striped": "1",
+		"table_header_text_color": "#FFFFFF",
+		"table_hover_bg": "rgba(37, 99, 235, 0.08)",
+		"table_border_color": "#D7DEEB",
+		"table_cell_padding": "12",
+		"sticky_table_header": "1",
+		"list_row_radius": "12",
+		"list_row_padding": "10",
+		"list_row_gap": "10",
+		"list_header_height": "52",
+		"list_header_radius": "12",
+		"list_header_bg": "var(--brand-color)",
+		"list_header_text_color": "#FFFFFF",
+		"list_hover_style": "Lift",
+		"list_hover_bg": "rgba(37, 99, 235, 0.08)",
+		"shortcut_card_radius": "16",
+		"shortcut_card_padding": "16",
+		"shortcut_icon_bg": "rgba(37, 99, 235, 0.12)",
+		"shortcut_icon_color": "#1D4ED8",
+		"shortcut_hover_lift": "4",
+		"report_toolbar_bg": "rgba(255, 255, 255, 0.75)",
+		"surface_bg_color": "#F7F9FC",
+		"surface_card_color": "#FFFFFF",
+		"border_color": "#D7DEEB",
+		"text_primary_color": "#0F172A",
+		"text_muted_color": "#64748B",
+		"link_color": "#1D4ED8",
+		"navbar_height": "54",
+		"sidebar_width": "248",
+		"input_focus_ring_color": "rgba(37, 99, 235, 0.25)",
+		"badge_radius": "999",
+		"badge_style": "Soft",
+		"ui_density_mode": "Standard",
+		"content_max_width": "1680",
+		"navbar_blur_strength": "20",
+		"button_text_transform": "None",
+		"card_border_style": "Subtle",
+	}
+
+	for key, value in theme_defaults.items():
+		theme_settings_list.setdefault(key, value)
+
+	custom_css_code = (theme_settings_list.get("custom_css_code") or "")
+	custom_css_code = re.sub(r"<\/?style[^>]*>", "", custom_css_code, flags=re.IGNORECASE)
+	custom_css_code = re.sub(r"<\/?script[^>]*>", "", custom_css_code, flags=re.IGNORECASE)
+
+	custom_js_code = (theme_settings_list.get("custom_js_code") or "")
+	custom_js_code = re.sub(r"<script[^>]*>", "", custom_js_code, flags=re.IGNORECASE)
+	custom_js_code = re.sub(r"</script>", "", custom_js_code, flags=re.IGNORECASE)
+
 	light_logo = theme_settings_list.get('light_logo')
 	dark_logo = theme_settings_list.get('dark_logo')
 	default_light_logo = boot.app_logo_url or "/assets/frappe/images/frappe-logo.png"
@@ -102,7 +174,9 @@ def get_context(context):
 			"dark_theme": theme,
 			"theme_settings": theme_settings_list,
 			"disable_splash" : bool(int(theme_settings_list.get('disable_splash', 0))),
-			"theme_color": (theme_settings_list['color'] or 'Blue').lower() if 'color' in theme_settings_list else 'blue',
+			"theme_color": theme_settings_list.get("color") or "#2563EB",
+			"custom_css_code": custom_css_code,
+			"custom_js_code": custom_js_code,
 		}
 	)
 

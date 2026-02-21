@@ -110,23 +110,25 @@ $(document).ready(() => {
 	})();
 
 	function relocatePageHeadIntoMainWrapper() {
-		const pageContents = document.querySelectorAll(".page-content");
-		pageContents.forEach((pageContent) => {
-			const pageHead = pageContent.querySelector(":scope > .page-head.flex");
-			if (!pageHead) return;
+		const layoutRows = document.querySelectorAll(".row.layout-main");
+		layoutRows.forEach((row) => {
+			const wrapper = row.querySelector(".layout-main-section-wrapper");
+			if (!wrapper) return;
 
-			const mainWrapper =
-				pageContent.querySelector(".layout-main .layout-main-section-wrapper") ||
-				pageContent.querySelector(".layout-main-section-wrapper");
+			const rowChildren = Array.from(row.children || []);
+			const directPageHead = rowChildren.find(
+				(el) => el.classList && el.classList.contains("page-head") && el.classList.contains("flex")
+			);
 
-			if (mainWrapper && pageHead.parentElement !== mainWrapper) {
-				mainWrapper.insertBefore(pageHead, mainWrapper.firstChild);
-				return;
+			if (directPageHead && directPageHead.parentElement !== wrapper) {
+				wrapper.insertBefore(directPageHead, wrapper.firstChild);
 			}
 
-			const pageBody = pageContent.querySelector(":scope > .container.page-body");
-			if (pageBody && pageHead.parentElement !== pageBody) {
-				pageBody.insertBefore(pageHead, pageBody.firstChild);
+			const pageBody = wrapper.querySelector(":scope > .page-body");
+			const headInsideWrapper = wrapper.querySelector(":scope > .page-head.flex");
+
+			if (pageBody && headInsideWrapper && headInsideWrapper.nextElementSibling !== pageBody) {
+				wrapper.insertBefore(headInsideWrapper, pageBody);
 			}
 		});
 	}
